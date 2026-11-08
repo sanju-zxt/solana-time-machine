@@ -43,55 +43,113 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center p-4">
-      <div className="fixed inset-0 -z-10 bg-gradient-to-br from-slate-900 to-slate-800"></div>
-      
-      <h1 className="text-4xl font-bold mb-6 text-green-400">⚡ Solana Time Machine</h1>
-      <p className="text-gray-400 mb-8">Play-to-Earn Pong Arcade</p>
-      
-      {!isConnected ? (
-        <button onClick={connectWallet} className="px-6 py-3 bg-green-500 text-black font-bold rounded-lg mb-8">
-          🔗 Connect Wallet
-        </button>
-      ) : (
-        <div className="flex items-center gap-4 mb-8">
-          <span className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></span>
-          <span className="font-mono">{walletAddress}</span>
-          {isDemo && <span className="text-yellow-400 text-xs">Demo</span>}
-        </div>
-      )}
-      
-      <div className="grid grid-cols-3 gap-4 w-full max-w-md mb-8">
-        <div className="bg-slate-800 p-4 rounded-lg text-center">
-          <div className="text-xs text-gray-500">SCORE</div>
-          <div className="text-2xl font-bold text-green-400">{score}</div>
-        </div>
-        <div className="bg-slate-800 p-4 rounded-lg text-center">
-          <div className="text-xs text-gray-500">BALANCE</div>
-          <div className="text-lg font-bold text-green-400">{balance.toFixed(6)} SOL</div>
-        </div>
-        <div className="bg-slate-800 p-4 rounded-lg text-center">
-          <div className="text-xs text-gray-500">EARNED</div>
-          <div className="text-lg font-bold text-green-400">{(0.000001 * score).toFixed(6)} SOL</div>
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center">
+      {/* Header - Payment Style */}
+      <div className="w-full max-w-4xl mt-12 px-6">
+        <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                ⚡ Solana Time Machine
+              </h1>
+              <p className="text-gray-600">Play-to-Earn Pong Arcade</p>
+            </div>
+            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+              <span className="text-2xl">🎮</span>
+            </div>
+          </div>
+
+          {/* Wallet Section - Payment Button Style */}
+          {!isConnected ? (
+            <div className="text-center mb-8">
+              <button 
+                onClick={connectWallet}
+                className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors shadow-md"
+              >
+                <span className="mr-2">🔗</span>
+                Connect Wallet
+              </button>
+              <p className="text-sm text-gray-500 mt-3">Connect your Solana wallet to start playing</p>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center mb-8">
+              <div className="bg-gray-50 px-4 py-2 rounded-full border border-gray-200">
+                <span className="text-sm text-gray-600 mr-2">Connected:</span>
+                <span className="font-mono text-gray-800 text-sm">
+                  {walletAddress}
+                </span>
+                {isDemo && (
+                  <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-yellow-100 text-yellow-800 rounded">
+                    Demo Mode
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Stats - Payment Style Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 text-center">
+              <div className="text-xs font-medium text-gray-500 mb-2">SCORE</div>
+              <div className="text-3xl font-bold text-gray-900">{score}</div>
+            </div>
+            <div className="border-2 border-green-200 bg-white rounded-xl p-6 text-center">
+              <div className="text-xs font-medium text-gray-500 mb-2">BALANCE</div>
+              <div className="text-2xl font-bold text-green-600">{balance.toFixed(6)} SOL</div>
+              <div className="text-xs text-gray-500 mt-1">${(balance * 1000).toFixed(2)} USD</div>
+            </div>
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 text-center">
+              <div className="text-xs font-medium text-gray-500 mb-2">EARNED</div>
+              <div className="text-xl font-bold text-gray-900">{(0.000001 * score).toFixed(6)} SOL</div>
+            </div>
+          </div>
+
+          {/* Game Container */}
+          <div className="text-center mb-8">
+            <div className="inline-block bg-gray-100 rounded-2xl p-4">
+              <Game onHit={handleHit} isActive={isConnected} />
+            </div>
+          </div>
+
+          {/* Tutorial Modal - Payment Style */}
+          {showTutorial && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+                <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
+                  How to Play
+                </h3>
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-start">
+                    <span className="mr-3 text-green-600">✓</span>
+                    <span className="text-gray-600">Move mouse over the game to control your paddle</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-3 text-green-600">✓</span>
+                    <span className="text-gray-600">Hit the ball to earn 0.000001 SOL per hit</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-3 text-green-600">✓</span>
+                    <span className="text-gray-600">Ball speeds up with each successful hit</span>
+                  </li>
+                </ul>
+                <button 
+                  onClick={() => setShowTutorial(false)}
+                  className="w-full py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition-colors"
+                >
+                  Start Playing
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Footer */}
+          <div className="text-center py-6 border-t border-gray-100 mt-8">
+            <p className="text-sm text-gray-500">
+              Built with Next.js + Solana | 400ms Solana Transactions
+            </p>
+          </div>
         </div>
       </div>
-      
-      <div className="bg-slate-800 rounded-xl p-4 mb-8">
-        <Game onHit={handleHit} isActive={isConnected} />
-      </div>
-      
-      {showTutorial && (
-        <div className="bg-slate-800 p-4 rounded-lg w-full max-w-md mb-8">
-          <h3 className="font-bold mb-2">How to Play:</h3>
-          <ul className="text-sm space-y-1">
-            <li>• Move mouse to control paddle</li>
-            <li>• Hit ball to earn SOL</li>
-          </ul>
-          <button onClick={() => setShowTutorial(false)} className="mt-2 px-4 py-2 bg-green-500 rounded">Got it!</button>
-        </div>
-      )}
-      
-      <div className="text-center text-gray-500 text-sm">Built with Next.js + Solana</div>
     </div>
   )
 }
@@ -116,10 +174,12 @@ function Game({ onHit, isActive }: { onHit: () => void; isActive: boolean }) {
     const loop = () => {
       if (!ctx) return
       
-      ctx.fillStyle = '#1e293b'
+      // Clear background
+      ctx.fillStyle = '#f8fafc'
       ctx.fillRect(0, 0, 600, 400)
 
-      ctx.strokeStyle = 'rgba(34, 197, 94, 0.1)'
+      // Draw grid
+      ctx.strokeStyle = '#e2e8f0'
       ctx.lineWidth = 1
       for (let i = 0; i < 600; i += 40) {
         ctx.beginPath()
@@ -128,20 +188,28 @@ function Game({ onHit, isActive }: { onHit: () => void; isActive: boolean }) {
         ctx.stroke()
       }
 
+      // Ball
       ctx.fillStyle = '#22c55e'
       ctx.fillRect(ballXRef.current, ballYRef.current, 10, 10)
+      
+      // Paddle
+      ctx.fillStyle = '#64748b'
       ctx.fillRect(10, paddleYRef.current, 10, 100)
 
+      // Ball movement
       ballXRef.current += dx
       ballYRef.current += dy
 
+      // Top/bottom collision
       if (ballYRef.current <= 0 || ballYRef.current >= 390) dy = -dy
 
+      // Paddle collision
       if (ballXRef.current <= 20 && ballYRef.current >= paddleYRef.current && ballYRef.current <= paddleYRef.current + 100) {
         dx = -dx
         onHit()
       }
       
+      // Reset if missed
       if (ballXRef.current < -10) {
         ballXRef.current = 50
         ballYRef.current = 250
@@ -166,6 +234,11 @@ function Game({ onHit, isActive }: { onHit: () => void; isActive: boolean }) {
   }, [isActive, onHit])
 
   return (
-    <canvas ref={canvasRef} width={600} height={400} className="rounded-lg" />
+    <canvas 
+      ref={canvasRef} 
+      width={600} 
+      height={400} 
+      className="rounded-lg shadow-md cursor-pointer"
+    />
   )
 }

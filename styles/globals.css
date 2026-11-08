@@ -3,18 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  html, body {
-    @apply bg-slate-900 text-white;
-    font-family: 'Inter', system-ui, sans-serif;
-  }
-}
-
-@layer utilities {
-  .aurora {
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(circle at 30% 30%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 70% 70%, rgba(34, 197, 94, 0.15) 0%, transparent 50%);
-    z-index: -1;
+  body {
+    @apply font-sans;
   }
 }
