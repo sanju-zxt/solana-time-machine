@@ -107,6 +107,7 @@ export default function Home() {
 function Game({ onHit, isActive }: { onHit: () => void; isActive: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number>()
+  const paddleYRef = useRef(200)
 
   useEffect(() => {
     if (!canvasRef.current || !isActive) return
@@ -115,9 +116,7 @@ function Game({ onHit, isActive }: { onHit: () => void; isActive: boolean }) {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    let x = 50, y = 250, dx = 3, dy = 2
-    let paddleY = 200
-    const height = 100
+    let x = 50, y = 250, dx = -3, dy = 2
 
     const loop = () => {
       if (!ctx) return
@@ -131,31 +130,41 @@ function Game({ onHit, isActive }: { onHit: () => void; isActive: boolean }) {
       
       // Paddle
       ctx.fillStyle = '#22c55e'
-      ctx.fillRect(10, paddleY, 10, height)
+      ctx.fillRect(10, paddleYRef.current, 10, 100)
 
       // Movement
       x += dx
       y += dy
 
-      // Collision
+      // Collision with top/bottom
       if (y <= 0 || y >= 390) dy = -dy
-      if (x <= 20 && y >= paddleY && y <= paddleY + height) {
+
+      // Collision with paddle
+      if (x <= 20 && y >= paddleYRef.current && y <= paddleYRef.current + 100) {
         dx = -dx
         onHit()
+      }
+      
+      // Reset ball if missed
+      if (x < -10) {
+        x = 50
+        y = 250
+        dx = 3
       }
 
       animationRef.current = requestAnimationFrame(loop)
     }
 
-    canvas.addEventListener('mousemove', (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect()
-      paddleY = e.clientY - rect.top - 50
-      paddleY = Math.max(0, Math.min(300, paddleY))
-    })
+      paddleYRef.current = Math.max(0, Math.min(300, e.clientY - rect.top - 50))
+    }
 
+    canvas.addEventListener('mousemove', handleMouseMove)
     loop()
 
     return () => {
+      canvas.removeEventListener('mousemove', handleMouseMove)
       if (animationRef.current) cancelAnimationFrame(animationRef.current)
     }
   }, [isActive, onHit])
