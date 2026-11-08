@@ -1,6 +1,6 @@
-// Placeholder for wallet adapter - working around npm issues
-// The app works without wallet adapters for the demo
+import '../styles/globals.css'
+import type { AppProps } from 'next/app'
 
-export default function App({ Component, pageProps }: { Component: any, pageProps: any }) {
+export default function App({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />
 }
