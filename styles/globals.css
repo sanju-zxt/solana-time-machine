@@ -1,0 +1,160 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* NEON GREEN THEME */
+:root {
+  --tw-bg-opacity: 1;
+  --tw-text-color: color: rgba(36, 195, 134, var(--tw-bg-opacity));
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-solana-dark text-white;
+    font-family: 'Press Start 2P', monospace;
+    background: radial-gradient(ellipse at top left, #1e3a8a 0%, #0a2242 100%);
+    animation: galaxy 20s infinite alternate;
+  }
+  
+  @keyframes galaxy {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.02); }
+  }
+  
+  @keyframes grid {
+    0% { background-position: 0 0; }
+    100% { background-position: 100% 100%; }
+  }
+}
+
+@layer utilities {
+  .bg-solana-dark {
+    background-color: #0A2242;
+  }
+  
+  .text-solana-green {
+    color: #24C386;
+  }
+  
+  .solana-green {
+    @apply text-solana-green font-bold;
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 20px rgba(36, 195, 134, 0.5);
+    border: 2px solid #24C386;
+  }
+  
+  .neon-border {
+    position: relative;
+    border: 2px solid #24C386;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .neon-border::before {
+    content: '';
+    position: absolute;
+    top: -2px; left: -2px;
+    right: -2px; bottom: -2px;
+    background: linear-gradient(45deg, #24C386, #16a34a, #24C386);
+    border-radius: 14px;
+    z-index: -1;
+    animation: neonGlow 2s linear infinite;
+  }
+  
+  @keyframes neonGlow {
+    0%, 100% { filter: drop-shadow(0 0 5px #24C386) drop-shadow(0 0 10px #24C386); }
+    50% { filter: drop-shadow(0 0 10px #24C386) drop-shadow(0 0 20px #24C386); }
+  }
+  
+  .bg-grid {
+    background-image: 
+      linear-gradient(rgba(36, 195, 134, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(36, 195, 134, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: grid 5s infinite;
+  }
+  
+  .aurora {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 30%, rgba(36, 195, 134, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(36, 195, 134, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(36, 195, 134, 0.05) 0%, transparent 50%);
+    filter: blur(80px);
+    animation: auroraMove 10s infinite;
+    z-index: -1;
+  }
+  
+  @keyframes auroraMove {
+    0%, 100% { transform: translate(-25%, -25%) rotate(0deg); }
+    25% { transform: translate(25%, -25%) rotate(90deg); }
+    50% { transform: translate(25%, 25%) rotate(180deg); }
+    75% { transform: translate(-25%, 25%) rotate(270deg); }
+  }
+  
+  .retro-font {
+    font-family: 'Press Start 2P', monospace;
+    text-shadow: 0 0 5px rgba(36, 195, 134, 0.5);
+  }
+  
+  .glow-button {
+    background: linear-gradient(45deg, #24C386, #16a34a);
+    color: #0A2242;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(36, 195, 134, 0.5);
+    animation: buttonPulse 2s infinite;
+  }
+  
+  .glow-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(36, 195, 134, 0.8);
+    filter: brightness(1.2);
+  }
+  
+  .glow-button:active {
+    transform: scale(0.95);
+  }
+  
+  @keyframes buttonPulse {
+    0%, 100% { box-shadow: 0 0 15px rgba(36, 195, 134, 0.5); }
+    50% { box-shadow: 0 0 30px rgba(36, 195, 134, 0.8); }
+  }
+  
+  .score-counter {
+    font-size: 2rem;
+    color: #24C386;
+    text-shadow: 0 0 10px rgba(36, 195, 134, 0.7);
+    animation: countUp 0.5s ease-out;
+  }
+  
+  @keyframes countUp {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  
+  .transaction-flash {
+    animation: flash 0.5s ease-out;
+  }
+  
+  @keyframes flash {
+    0% { background-color: rgba(36, 195, 134, 0.2); }
+    100% { background-color: transparent; }
+  }
+}
